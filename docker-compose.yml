@@ -1,0 +1,27 @@
+version: "3"
+volumes:
+  db:
+  media:
+services:
+  app:
+    build: .
+    ports:
+      - 8000:80
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+    links:
+      - db
+    volumes:
+      - media:/app/media
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=secret
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - db:/var/lib/mysql
