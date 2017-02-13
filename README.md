@@ -10,7 +10,7 @@
 
 ### Getting Started
 
-1. `git clone https://github.com/jteppinette/water-dragon.git`
+1. `git clone https://github.com/jteppinette/water-dragon-api.git`
 
 2. `virtualenv venv`
 
