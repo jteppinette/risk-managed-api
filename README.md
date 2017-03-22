@@ -28,7 +28,7 @@
 
 ### Testing
 
-You will need to grant the `db` user `* . *` permissions to your MySQL instance
+You will need to grant the `db` user `* . *` permissions to your PostgreSQL instance
 to allow the Django test runner to create and destroy test databases during testing.
 
 Once this is complete, you can run the tests with `python manage.py test`.
@@ -44,7 +44,7 @@ Any variables marked as `insecure: true` should be overriden before being added 
 * DB_USER         `default: db`
 * DB_PASSWORD     `defualt: secret, insecure: true`
 * DB_HOST         `default: 0.0.0.0`
-* DB_PORT         `default: 3306`
+* DB_PORT         `default: 5432`
 * SESSION_SECRET  `defualt: secret, insecure: true`
 
 ### Docker
@@ -53,12 +53,11 @@ Any variables marked as `insecure: true` should be overriden before being added 
 
 2. `docker run \
       -d
-      -e MYSQL_DATABASE=db
-      -e MYSQL_USER=db
-      -e MYSQL_PASSWORD=db-secret
-      -e MYSQL_RANDOM_ROOT_PASSWORD=yes
+      -e POSTGRES_DB=db
+      -e POSTGRES_USER=db
+      -e POSTGRES_PASSWORD=db-secret
       --name db
-      mysql`
+      postgres:9.6`
 
 3. `docker run
       -d
@@ -66,7 +65,7 @@ Any variables marked as `insecure: true` should be overriden before being added 
       -e SESSION_SECRET=session-secret
       -e DB_NAME=db
       -e DB_USER=db
-      -e DB_PORT=3306
+      -e DB_PORT=5432
       -e DB_PASSWORD=db-secret
       -e DB_HOST=db
       --link db
