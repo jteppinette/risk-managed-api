@@ -269,7 +269,6 @@ class GuestRegistrationSerializer(serializers.ModelSerializer):
     Serialize a `GuestRegistration` model into the proper format.
     """
     image = HyperlinkedImageField()
-    thumbnail = HyperlinkedImageField(read_only=True)
 
     class Meta:
         model = GuestRegistration

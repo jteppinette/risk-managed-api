@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from django.core.files import File
+from django.core.files.base import File as DjangoFile
 
+import traceback
 import urllib2
 import json
 import random
 import os
-from shutil import copyfile
 
 # Custom User Model
 from django.contrib.auth import get_user_model
@@ -331,21 +331,20 @@ class Command(BaseCommand):
         identities = Identity.objects.all()
         events = Event.objects.all()
 
-        ROOT = settings.ROOT
-        if not os.path.isdir(os.path.join(settings.MEDIA_ROOT, 'images', 'guests')):
-            os.makedirs(os.path.join(settings.MEDIA_ROOT, 'images', 'guests'))
+        from django.core.files.uploadedfile import SimpleUploadedFile
 
         for i in range(500):
             event = random.choice(events)
             identity = random.choice(identities)
             try:
-                relative_file_path = os.path.join('images', 'guests', str(identity.id) + '-' + str(event.id) + '-image.jpg')
-                copyfile(os.path.join(settings.ROOT, 'static', 'tests', 'test_image.jpg'), os.path.join(settings.MEDIA_ROOT, relative_file_path))
-                GuestRegistration.objects.create(identity=identity,
-                                                 event=event,
-                                                 image=relative_file_path)
-                print str(i) + '. %s at %s.' % (str(identity), str(event))
+                with open(os.path.join(settings.ROOT, 'static', 'tests', 'test_image.jpg'), 'rb') as f:
+                    name = os.path.join('images', 'guests', str(identity.id) + '-' + str(event.id) + '-image.jpg')
+                    GuestRegistration.objects.create(identity=identity,
+                                                     event=event,
+                                                     image=SimpleUploadedFile(name, f.read()))
+                    print str(i) + '. %s at %s.' % (str(identity), str(event))
             except Exception, e:
                 print str(e)
+                print str(traceback.format_exc())
 
         print '\t13. GuestRegistration'

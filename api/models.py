@@ -47,8 +47,10 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from PIL import Image
 from StringIO import StringIO
+from io import BytesIO
 
-from api.utils.image import thumbnail
+from django_minio.storage import MinioStorage
+
 
 """
                              USER HELPER MODELS
@@ -520,8 +522,7 @@ class GuestRegistration(models.Model):
     The `GuestRegistration` model represnts when a single `Identity` is
     registered to a specific `Event`.
     """
-    image = models.ImageField(upload_to='images/guests')
-    thumbnail = models.ImageField(upload_to='images/guests', editable=False)
+    image = models.ImageField(upload_to='images/guests', storage=MinioStorage())
 
     identity = models.ForeignKey(Identity, related_name='registrations')
     event = models.ForeignKey(Event, related_name='registrations')
@@ -536,24 +537,6 @@ class GuestRegistration(models.Model):
         Return a unicode respresentation of this model.
         """
         return '%s at %s' % (str(self.identity), self.event.name)
-
-    def save(self, *args, **kwargs):
-        """
-        This method scales down the self.thumbnail to create self.thumbnail as a new
-        file in the filesyste with a new name.
-        """
-        super(GuestRegistration, self).save(*args, **kwargs)
-
-        img = Image.open(StringIO(self.image.read()))
-        img = thumbnail(img, (80, 80))
-        
-        img_io = StringIO()
-        img.save(img_io, format='JPEG')
-  
-        image_path = str(self.identity.pk) + '-' + str(self.event.pk)
-        image_file = InMemoryUploadedFile(img_io, None, '%s-thumbnail.jpg' % (str(image_path)), 'image/jpeg', img_io.len, None)
-        self.thumbnail = image_file
-        super(GuestRegistration, self).save(update_fields=['thumbnail'])
 
 
 """
