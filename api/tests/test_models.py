@@ -66,10 +66,6 @@ class ModelTests(TestCase):
         if not os.path.isdir(os.path.join(settings.MEDIA_ROOT, 'images', 'guests')):
             os.makedirs(os.path.join(settings.MEDIA_ROOT, 'images', 'guests'))
 
-    def tearDown(self):
-        if settings.MEDIA_ROOT is not '' and settings.MEDIA_ROOT is not settings.ROOT:
-            rmtree(settings.MEDIA_ROOT)
-    
     def test_necessary_models_exist(self):
         """
         Assert that the models necessary to Risk Managed exist and can be

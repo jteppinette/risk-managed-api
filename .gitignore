@@ -4,3 +4,4 @@ venv
 staticfiles
 email
 **/migrations/0*.py
+images
