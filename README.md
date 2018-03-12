@@ -48,7 +48,7 @@ Any variables marked as `insecure: true` should be overriden before being added 
 * MINIO_SECRET    `default: 'secret-key, insecure: true`
 * MINIO_SECURE    `default: false`
 * SESSION_SECRET  `defualt: secret, insecure: true`
-* MAIL_FROM       `default: notifications@water-dragon-api.localhost')
+* MAIL_FROM       `default: notifications@water-dragon-api.localhost`
 * MAIL_HOST       `default: 0.0.0.0`
 * MAIL_PORT       `default: 1025`
 * MAIL_PASSWORD   `default: `
