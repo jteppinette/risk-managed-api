@@ -24,10 +24,11 @@ $ python manage.py runserver
 
 ### Testing
 
-You will need to grant the `db` user `* . *` permissions to your PostgreSQL instance
-to allow the Django test runner to create and destroy test databases during testing.
+After setting up the development environment with the steps above, you can run the following command to execute the test suite.
 
-Once this is complete, you can run the tests with `python manage.py test`.
+```
+$ python manage.py test
+```
 
 ## Usage
 
