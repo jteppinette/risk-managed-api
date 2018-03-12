@@ -41,7 +41,7 @@ def welcome_user(sender, **kwargs):
     send_mail(
         'Welcome to Water Dragon',
         '',
-        'support@waterdragon.net',
+        settings.EMAIL_FROM,
         [user.email],
         fail_silently=False,
     )
@@ -59,12 +59,12 @@ def administrative_notification(content=''):
     to_list = []
 
     for user in users:
-        to_list.append({'type': 'to', 'email': str(user['email'])})
+        to_list.append(str(user['email']))
 
     send_mail(
         'Administrative Notification',
         content,
-        'support@waterdragon.net',
+        settings.EMAIL_FROM,
         to_list,
         fail_silently=False,
     )
@@ -152,17 +152,17 @@ def new_event_notification(sender, **kwargs):
 
     # Build `to` list
     ccs = administrator.user.addresses.values('email')
-    to_list = [{'type': 'to', 'email': str(administrator.user.email)}]
+    to_list = [str(administrator.user.email)]
 
     for cc in ccs:
-        to_list.append({'type': 'cc', 'email': str(cc['email'])})
+        to_list.append(str(cc['email']))
 
     serializer = EventSerializer(inst)
 
     send_mail(
         'New Event',
         JSONRenderer().render(serializer.data),
-        'support@waterdragon.net',
+        settings.EMAIL_FROM,
         to_list,
         fail_silently=False,
     )

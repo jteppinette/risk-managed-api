@@ -15,7 +15,7 @@ $ git clone https://github.com/jteppinette/water-dragon-api.git && cd water-drag
 $ virtualenv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
-$ docker-compose up -d db minio
+$ docker-compose up -d db minio mail
 $ python manage.py makemigrations
 $ python manage.py migrate
 $ python manage.py createfixturedata
@@ -48,3 +48,10 @@ Any variables marked as `insecure: true` should be overriden before being added 
 * MINIO_SECRET    `default: 'secret-key, insecure: true`
 * MINIO_SECURE    `default: false`
 * SESSION_SECRET  `defualt: secret, insecure: true`
+* MAIL_FROM       `default: notifications@water-dragon-api.localhost')
+* MAIL_HOST       `default: 0.0.0.0`
+* MAIL_PORT       `default: 1025`
+* MAIL_PASSWORD   `default: `
+* MAIL_USER       `default: `
+* MAIL_USE_TLS    `default: False`
+* MAIL_USE_SSL    `default: False`
