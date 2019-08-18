@@ -1,7 +1,2 @@
-*.pyc
-.coverage
+__pycache__
 venv
-staticfiles
-email
-**/migrations/0*.py
-images
