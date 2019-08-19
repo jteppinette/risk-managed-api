@@ -2,6 +2,7 @@ import ast
 import io
 import logging
 import os
+import sys
 import traceback
 from urllib import parse
 
@@ -10,6 +11,7 @@ import dj_database_url
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEVELOPMENT = ast.literal_eval(os.environ.get("DEVELOPMENT", "True"))
+TESTING = "test" in sys.argv
 DEBUG = DEVELOPMENT
 
 LOGIN_REDIRECT_URL = "dashboard"
@@ -129,7 +131,6 @@ USE_THOUSAND_SEPARATOR = True
 NUMBER_GROUPING = 3
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "secret")
-
 SECURE_PROXY_SSL_HEADER = ["HTTP_X_FORWARDED_PROTO", "https"]
 ALLOWED_HOSTS = ["*"]
 
@@ -151,7 +152,7 @@ class RequestFormatter(logging.Formatter):
         return result
 
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
+LOG_LEVEL = os.environ.get("LOG_LEVEL", "ERROR" if TESTING else "INFO")
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -183,13 +184,13 @@ LOGGING = {
         },
     },
     "loggers": {
-        "django": {"handlers": ["mail_admins"], "level": "INFO"},
+        "django": {"handlers": ["mail_admins"], "level": LOG_LEVEL},
         "django.request": {
             "handlers": ["console_request", "mail_admins"],
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "propagate": False,
         },
-        "django.server": {"handlers": ["django.server"], "level": "INFO", "propagate": False},
+        "django.server": {"handlers": ["django.server"], "level": LOG_LEVEL, "propagate": False},
     },
     "root": {"handlers": ["console"], "level": LOG_LEVEL},
 }
