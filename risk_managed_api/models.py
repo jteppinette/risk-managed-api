@@ -20,7 +20,7 @@ class University(models.Model):
         verbose_name_plural = "Universities"
 
     def __str__(self):
-        return self.name
+        return self.acronym
 
 
 class Nationals(models.Model):
